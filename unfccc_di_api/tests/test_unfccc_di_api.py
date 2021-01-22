@@ -11,12 +11,19 @@ def api_reader() -> UNFCCCApiReader:
 
 
 def test_non_annex_one(api_reader: UNFCCCApiReader):
-    api_reader.non_annex_one_reader.query(party_codes=["MMR"])
+    ans = api_reader.non_annex_one_reader.query(party_codes=["MMR"])
+    assert len(ans) > 1
 
 
 def test_annex_one(api_reader: UNFCCCApiReader):
-    api_reader.annex_one_reader.query(party_codes=["DEU"], gases=["N₂O"])
+    ans = api_reader.annex_one_reader.query(party_codes=["DEU"], gases=["N₂O"])
+    assert len(ans) > 1
 
 
 def test_unified(api_reader: UNFCCCApiReader):
-    api_reader.query(party_code="AFG")
+    ans = api_reader.query(party_code="AFG")
+    assert len(ans) > 1
+    ans = api_reader.query(party_code="DEU", gases=["N₂O"])
+    assert len(ans) > 1
+    with pytest.raises(KeyError):
+        api_reader.query(party_code="ASDF")
