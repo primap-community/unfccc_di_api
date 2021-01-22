@@ -6,3 +6,4 @@ Changelog
 ------------------
 
 * First release on PyPI.
+* Convert API wrapper into standalone Python package.

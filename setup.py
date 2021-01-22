@@ -10,7 +10,10 @@ with open("README.rst") as readme_file:
 with open("CHANGELOG.rst") as history_file:
     history = history_file.read()
 
-requirements = []
+requirements = [
+    "pandas",
+    "treelib",
+]
 
 setup_requirements = [
     "pytest-runner",
