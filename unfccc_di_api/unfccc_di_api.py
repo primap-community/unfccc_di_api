@@ -295,8 +295,10 @@ class UNFCCCSingleCategoryApiReader:
         Notes
         -----
         Further documentation about the meaning of parties, categories, classifications,
-        measures and gases is available at the
-        `UNFCCC documentation <https://unfccc.int/process-and-meetings/transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7>`_  # noqa: E501
+        measures and gases is available at the `UNFCCC documentation`_.
+
+        .. _UNFCCC documentation: https://unfccc.int/process-and-meetings/\
+transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         """
         party_ids = []
         for code in party_codes:

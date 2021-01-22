@@ -5,10 +5,11 @@ UNFCCC DI API
 
 .. image:: https://img.shields.io/pypi/v/unfccc_di_api.svg
         :target: https://pypi.python.org/pypi/unfccc_di_api
+        :alt: PyPI release
 
 .. image:: https://readthedocs.org/projects/unfccc-di-api/badge/?version=latest
         :target: https://unfccc-di-api.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+        :alt: Documentation
 
 
 
