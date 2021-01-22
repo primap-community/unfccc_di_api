@@ -13,7 +13,8 @@ UNFCCC DI API
 
 
 
-Python wrapper around the Flexible Query API of the UNFCCC
+Python wrapper around the `Flexible Query API <https://di.unfccc.int/flex_annex1>`_ of
+the UNFCCC.
 
 
 * Free software: Apache Software License 2.0
@@ -23,4 +24,6 @@ Python wrapper around the Flexible Query API of the UNFCCC
 Features
 --------
 
-* TODO
+* High-level API to query all information for a given party.
+* Low-level API to selectively query information with the same resolution as in the
+  UNFCCC web query tool.
