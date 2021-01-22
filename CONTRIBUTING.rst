@@ -56,12 +56,12 @@ Ready to contribute? Here's how to set up `unfccc_di_api` for local development.
 1. Fork the `unfccc_di_api` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/climate_categories.git
+    $ git clone git@github.com:your_name_here/unfccc_di_api.git
 
 3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper
    installed, this is how you set up your fork for local development::
 
-    $ cd climate_categories/
+    $ cd unfccc_di_api/
     $ make virtual-environment
     $ make install-pre-commit
 
