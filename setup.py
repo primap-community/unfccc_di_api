@@ -29,7 +29,7 @@ setup(
     author_email="mika.pflueger@pik-potsdam.de",
     python_requires=">=3.5",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: Apache Software License",
         "Natural Language :: English",
