@@ -1,38 +1,22 @@
-#!/usr/bin/env python
-
-"""Tests for `unfccc_di_api` package."""
+"""Tests for the `unfccc_di_api` package."""
 
 import pytest
 
-from unfccc_di_api import UNFCCCApiReader, UNFCCCSingleCategoryApiReader
+from unfccc_di_api import UNFCCCApiReader
 
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+@pytest.fixture(scope="module")
+def api_reader() -> UNFCCCApiReader:
+    return UNFCCCApiReader()
 
 
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+def test_non_annex_one(api_reader: UNFCCCApiReader):
+    api_reader.non_annex_one_reader.query(party_codes=["MMR"])
 
 
-def _smoketest_non_annex_one():
-    r = UNFCCCSingleCategoryApiReader(party_category="nonAnnexOne")
-    r.query(party_codes=["MMR"])
+def test_annex_one(api_reader: UNFCCCApiReader):
+    api_reader.annex_one_reader.query(party_codes=["DEU"], gases=["N₂O"])
 
 
-def _smoketest_annex_one():
-    r = UNFCCCSingleCategoryApiReader(party_category="annexOne")
-    r.query(party_codes=["DEU"], gases=["N₂O"])
-
-
-def _smoketest_unified():
-    r = UNFCCCApiReader()
-    r.query(party_code="AFG")
+def test_unified(api_reader: UNFCCCApiReader):
+    api_reader.query(party_code="AFG")

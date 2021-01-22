@@ -43,7 +43,7 @@ test: venv ## run tests quickly with the default Python
 	venv/bin/pytest
 
 coverage: venv ## check code coverage quickly with the default Python
-	venv/bin/coverage run --source climate_categories -m pytest
+	venv/bin/coverage run --source unfccc_di_api -m pytest
 	venv/bin/coverage report -m
 	venv/bin/coverage html
 
