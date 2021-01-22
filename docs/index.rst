@@ -8,6 +8,7 @@ Welcome to UNFCCC DI API's documentation!
    readme
    installation
    usage
+   api
    contributing
    credits
    changelog
