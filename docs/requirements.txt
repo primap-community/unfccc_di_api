@@ -1,2 +1,5 @@
 treelib
 pandas
+requests
+ipykernel
+nbsphinx

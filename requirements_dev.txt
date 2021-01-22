@@ -10,3 +10,5 @@ pytest
 pytest-runner
 pre-commit
 sphinx_rtd_theme
+ipykernel
+nbsphinx
