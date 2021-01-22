@@ -13,6 +13,7 @@ with open("CHANGELOG.rst") as history_file:
 requirements = [
     "pandas",
     "treelib",
+    "requests",
 ]
 
 setup_requirements = [
