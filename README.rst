@@ -36,3 +36,8 @@ If you use this library and want to cite it, please cite it as:
 
 Mika Pflüger. (2021, January 22). pik-primap/unfccc_di_api: Initial stable release
 (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.4457484
+
+Data package
+------------
+If you just want all the data in CSV and parquet format (suitable for reading with
+pandas), look at our `data package <https://doi.org/10.5281/zenodo.4199622>`_.
