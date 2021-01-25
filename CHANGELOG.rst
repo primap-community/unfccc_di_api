@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.1.0 (2021-01-25)
+------------------
+
+* Add a useful error message when querying for unknown parties, thanks to
+  Daniel Huppmann
+
 1.0.0 (2021-01-22)
 ------------------
 
