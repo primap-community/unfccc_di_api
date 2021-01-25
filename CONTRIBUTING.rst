@@ -109,4 +109,8 @@ Then run::
 $ bump2version patch # possible: major / minor / patch
 $ git push
 $ git push --tags
+
+Then, go to github and make a release from the tag. That will automatically trigger
+a release on zenodo. Use the new DOI from zenodo to update the citation information.
+
 $ make release
