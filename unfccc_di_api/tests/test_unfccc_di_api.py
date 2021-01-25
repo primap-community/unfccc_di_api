@@ -25,5 +25,7 @@ def test_unified(api_reader: UNFCCCApiReader):
     assert len(ans) > 1
     ans = api_reader.query(party_code="DEU", gases=["N₂O"])
     assert len(ans) > 1
-    with pytest.raises(KeyError):
+
+    match = "Unknown party *"
+    with pytest.raises(ValueError, match=match):
         api_reader.query(party_code="ASDF")

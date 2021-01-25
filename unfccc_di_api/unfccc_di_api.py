@@ -102,7 +102,8 @@ class UNFCCCApiReader:
         elif party_code in self.non_annex_one_reader.parties["code"].values:
             reader = self.non_annex_one_reader
         else:
-            raise KeyError(party_code)
+            help = "try `UNFCCCApiReader().parties` for list of valid codes"
+            raise ValueError(f"Unknown party `{party_code}`, {help}!")
 
         return reader.query(party_codes=[party_code], gases=gases, progress=progress)
 
