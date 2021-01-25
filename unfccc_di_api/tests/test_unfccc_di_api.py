@@ -12,6 +12,11 @@ def api_reader() -> UNFCCCApiReader:
 
 def test_non_annex_one(api_reader: UNFCCCApiReader):
     ans = api_reader.non_annex_one_reader.query(party_codes=["MMR"])
+
+    match = "Unknown party *"
+    with pytest.raises(ValueError, match=match):
+        api_reader.non_annex_one_reader.query(party_codes=["ASDF"])
+
     assert len(ans) > 1
 
 

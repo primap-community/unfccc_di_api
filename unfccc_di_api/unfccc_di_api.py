@@ -102,7 +102,7 @@ class UNFCCCApiReader:
         elif party_code in self.non_annex_one_reader.parties["code"].values:
             reader = self.non_annex_one_reader
         else:
-            help = "try `UNFCCCApiReader().parties` for list of valid codes"
+            help = "try `UNFCCCApiReader().parties` for a list of valid codes"
             raise ValueError(f"Unknown party `{party_code}`, {help}!")
 
         return reader.query(party_codes=[party_code], gases=gases, progress=progress)
@@ -303,7 +303,14 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         """
         party_ids = []
         for code in party_codes:
-            party_ids.append(self._name_id(self.parties, code, key="code"))
+            try:
+                party_ids.append(self._name_id(self.parties, code, key="code"))
+            except KeyError:
+                help = (
+                    "try `UNFCCCSingleCategoryApiReader.parties` for a list of"
+                    " valid codes"
+                )
+                raise ValueError(f"Unknown party `{code}`, {help}!")
 
         # always query all years
         year_ids = list(self.years.index)
