@@ -27,7 +27,7 @@ test_requirements = [
 setup(
     author="Mika Pflüger",
     author_email="mika.pflueger@pik-potsdam.de",
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
@@ -47,7 +47,7 @@ setup(
     name="unfccc_di_api",
     packages=find_packages(include=["unfccc_di_api", "unfccc_di_api.*"]),
     setup_requires=setup_requirements,
-    test_suite="tests",
+    test_suite="unfccc_di_api.tests",
     tests_require=test_requirements,
     url="https://github.com/pik-primap/unfccc_di_api",
     version="1.1.1",
