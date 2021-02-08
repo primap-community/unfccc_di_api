@@ -2,11 +2,16 @@
 Changelog
 =========
 
+1.1.1 (2021-02-08)
+------------------
+
+* Include ipython notebooks and CHANGELOG in release tarballs.
+
 1.1.0 (2021-01-25)
 ------------------
 
 * Add a useful error message when querying for unknown parties, thanks to
-  Daniel Huppmann
+  Daniel Huppmann.
 
 1.0.0 (2021-01-22)
 ------------------
