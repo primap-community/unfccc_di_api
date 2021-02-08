@@ -34,9 +34,9 @@ Citation
 --------
 If you use this library and want to cite it, please cite it as:
 
-Mika Pflüger, & Daniel Huppmann. (2021, January 25).
-pik-primap/unfccc_di_api (Version v1.1.0).
-Zenodo. http://doi.org/10.5281/zenodo.4461189
+Mika Pflüger, & Daniel Huppmann. (2021, February 8).
+pik-primap/unfccc_di_api: Version 1.1.1.
+Zenodo. http://doi.org/10.5281/zenodo.4520055
 
 Data package
 ------------
