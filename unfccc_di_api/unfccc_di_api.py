@@ -141,11 +141,10 @@ class UNFCCCApiReader:
             help = "try `UNFCCCApiReader().parties` for a list of valid codes"
             raise ValueError(f"Unknown party `{party_code}`, {help}!")
 
-        data = reader.query(party_codes=[party_code], gases=gases,
-                            progress=progress)
+        data = reader.query(party_codes=[party_code], gases=gases, progress=progress)
 
         if normalize_gas_names:
-            for c in ['unit', 'gas']:
+            for c in ["unit", "gas"]:
                 data[c] = data[c].apply(lambda x: x.translate(MAKE_ASCII))
 
         return data
