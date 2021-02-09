@@ -24,23 +24,23 @@ import treelib
 
 # mapping from gas as simple string to subscript-format used by UNFCCC DI API
 GAS_MAPPING = {
-    'CH4': 'CH₄',
-    'CO2': 'CO₂',
-    'N2O': 'N₂O',
-    'NF3': 'NF₃',
-    'SF6': 'SF₆',
-    'CF4': 'CF₄',
-    'C2F6': 'C₂F₆',
-    'c-C3F6': 'c-C₃F₆',
-    'C3F8': 'C₃F₈',
-    'c-C4F8': 'c-C₄F₈',
-    'C4F10': 'C₄F₁₀',
-    'C5F12': 'C5F₁₂',  # this seems to be a typo in the UNFCCC API
-    'C6F14': 'C₆F₁₄',
-    'C10F18': 'C₁₀F₁₈',
-    'NH3': 'NH₃',
-    'NOx': 'NOₓ',
-    'SO2': 'SO₂'
+    "CH4": "CH₄",
+    "CO2": "CO₂",
+    "N2O": "N₂O",
+    "NF3": "NF₃",
+    "SF6": "SF₆",
+    "CF4": "CF₄",
+    "C2F6": "C₂F₆",
+    "c-C3F6": "c-C₃F₆",
+    "C3F8": "C₃F₈",
+    "c-C4F8": "c-C₄F₈",
+    "C4F10": "C₄F₁₀",
+    "C5F12": "C5F₁₂",  # this seems to be a typo in the UNFCCC API
+    "C6F14": "C₆F₁₄",
+    "C10F18": "C₁₀F₁₈",
+    "NH3": "NH₃",
+    "NOx": "NOₓ",
+    "SO2": "SO₂",
 }
 
 # mapping of subscript notation to ASCII string
@@ -148,7 +148,6 @@ class UNFCCCApiReader:
                 data[c] = data[c].apply(lambda x: x.translate(MAKE_ASCII))
 
         return data
-
 
 
 class UNFCCCSingleCategoryApiReader:
