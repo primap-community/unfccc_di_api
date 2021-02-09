@@ -11,8 +11,8 @@ UNFCCC DI API
         :target: https://unfccc-di-api.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4461189.svg
-   :target: https://doi.org/10.5281/zenodo.4461189
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4525036.svg
+   :target: https://doi.org/10.5281/zenodo.4525036
 
 
 Python wrapper around the `Flexible Query API <https://di.unfccc.int/flex_annex1>`_ of
@@ -34,9 +34,9 @@ Citation
 --------
 If you use this library and want to cite it, please cite it as:
 
-Mika Pflüger, & Daniel Huppmann. (2021, February 8).
-pik-primap/unfccc_di_api: Version 1.1.1.
-Zenodo. http://doi.org/10.5281/zenodo.4520055
+Mika Pflüger, & Daniel Huppmann. (2021, February 9).
+pik-primap/unfccc_di_api: Version 2.0.0.
+Zenodo. http://doi.org/10.5281/zenodo.4525036
 
 Data package
 ------------
