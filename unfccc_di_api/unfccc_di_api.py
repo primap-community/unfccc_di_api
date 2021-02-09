@@ -114,7 +114,7 @@ class UNFCCCApiReader:
             Display a progress bar. Requires the :py:mod:`tqdm` library. Default: false.
         normalize_gas_names : bool, optional
             If :obj:`True`, return gases as ASCII strings ("N2O").
-            Else, return native UNFCCC notation ("N₂O").
+            Else, return native UNFCCC notation ("N₂O"). Default: true.
 
         Returns
         -------
@@ -128,10 +128,6 @@ class UNFCCCApiReader:
         corresponding methods :py:meth:`UNFCCCApiReader.annex_one_reader.query` and
         :py:meth:`UNFCCCApiReader.non_annex_one_reader.query`.
         """
-        # format gases to subscript notation
-        if gases is not None:
-            gases = [GAS_MAPPING.get(g, g) for g in gases]
-
         # select corresponding reader
         if party_code in self.annex_one_reader.parties["code"].values:
             reader = self.annex_one_reader
@@ -141,13 +137,12 @@ class UNFCCCApiReader:
             help = "try `UNFCCCApiReader().parties` for a list of valid codes"
             raise ValueError(f"Unknown party `{party_code}`, {help}!")
 
-        data = reader.query(party_codes=[party_code], gases=gases, progress=progress)
-
-        if normalize_gas_names:
-            for c in ["unit", "gas"]:
-                data[c] = data[c].apply(lambda x: x.translate(MAKE_ASCII))
-
-        return data
+        return reader.query(
+            party_codes=[party_code],
+            gases=gases,
+            progress=progress,
+            normalize_gas_names=normalize_gas_names,
+        )
 
 
 class UNFCCCSingleCategoryApiReader:
@@ -300,6 +295,7 @@ class UNFCCCSingleCategoryApiReader:
         gases: typing.Union[None, typing.List[str]] = None,
         batch_size: int = 1000,
         progress: bool = False,
+        normalize_gas_names: bool = True,
     ) -> pd.DataFrame:
         """Query the UNFCCC for data.
 
@@ -322,13 +318,17 @@ class UNFCCCSingleCategoryApiReader:
             Default: query for all measures.
         gases : list of str, optional
             Limit the query to these gases. For possible values, see
-            :py:attr:`~UNFCCCApiReader.gases`. Default: query for all gases.
+            :py:attr:`~UNFCCCApiReader.gases`. Accepts subscripts ("N₂O")
+            as well as ASCII-strings ("N2O"). Default: query for all gases.
         batch_size : int, optional
             Number of variables to query in a single API query in the same batch to
             avoid internal server errors. Larger queries are split automatically.
             The default is 1000, which seems to work fine.
         progress : bool
             Display a progress bar. Requires the :py:mod:`tqdm` library. Default: false.
+        normalize_gas_names : bool, optional
+            If :obj:`True`, return gases as ASCII strings ("N2O").
+            Else, return native UNFCCC notation ("N₂O"). Default: true.
 
 
         Returns
@@ -343,6 +343,10 @@ class UNFCCCSingleCategoryApiReader:
         .. _UNFCCC documentation: https://unfccc.int/process-and-meetings/\
 transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         """
+        # format gases to subscript notation
+        if gases is not None:
+            gases = [GAS_MAPPING.get(g, g) for g in gases]
+
         party_ids = []
         for code in party_codes:
             try:
@@ -384,7 +388,13 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         if progress:
             pbar.close()
 
-        return self._parse_raw_answer(raw_response)
+        df = self._parse_raw_answer(raw_response)
+
+        if normalize_gas_names:
+            for c in ["unit", "gas"]:
+                df[c] = df[c].apply(lambda x: x.translate(MAKE_ASCII))
+
+        return df
 
     def _parse_raw_answer(self, raw: typing.List[dict]) -> pd.DataFrame:
         data = []
