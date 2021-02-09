@@ -2,11 +2,14 @@
 Changelog
 =========
 
-Next release
-------------
+2.0.0 (2021-02-09)
+------------------
 
 * Accept ASCII format for ``gases`` when querying data
   and return gases & units normalized to ASCII (optional), thanks to Daniel Huppmann.
+  Note that gases and units are normalized to ASCII by default, if you need the old
+  behaviour for compatibility reasons, pass ``normalize_gas_names=False`` to your
+  ``query()`` calls.
 
 1.1.1 (2021-02-08)
 ------------------
