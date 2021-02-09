@@ -1,5 +1,5 @@
 __license__ = """
-Copyright 2020 Potsdam-Institut für Klimafolgenforschung e.V.
+Copyright 2020-2021 Potsdam-Institut für Klimafolgenforschung e.V.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ class UNFCCCApiReader:
         The API reader object for non-Annex I parties.
     """
 
-    def __init__(self, *, base_url="https://di.unfccc.int/api/"):
+    def __init__(self, *, base_url: str = "https://di.unfccc.int/api/"):
         """
         Parameters
         ----------
@@ -95,7 +95,7 @@ class UNFCCCApiReader:
         self,
         *,
         party_code: str,
-        gases: typing.Union[typing.List[str], None] = None,
+        gases: typing.Optional[typing.Sequence[str]] = None,
         progress: bool = False,
         normalize_gas_names: bool = True,
     ) -> pd.DataFrame:
@@ -182,7 +182,9 @@ class UNFCCCSingleCategoryApiReader:
         measure, gas, and unit.
     """
 
-    def __init__(self, *, party_category: str, base_url="https://di.unfccc.int/api/"):
+    def __init__(
+        self, *, party_category: str, base_url: str = "https://di.unfccc.int/api/"
+    ):
         """
         Parameters
         ----------
@@ -265,9 +267,9 @@ class UNFCCCSingleCategoryApiReader:
     def _flexible_query(
         self,
         *,
-        variable_ids: typing.List[int],
-        party_ids: typing.List[int],
-        year_ids: typing.List[int],
+        variable_ids: typing.Sequence[int],
+        party_ids: typing.Sequence[int],
+        year_ids: typing.Sequence[int],
     ) -> typing.List[dict]:
 
         if len(variable_ids) > 3000:
@@ -288,11 +290,11 @@ class UNFCCCSingleCategoryApiReader:
     def query(
         self,
         *,
-        party_codes: typing.List[str],
-        category_ids: typing.Union[None, typing.List[int]] = None,
-        classifications: typing.Union[None, typing.List[str]] = None,
-        measure_ids: typing.Union[None, typing.List[int]] = None,
-        gases: typing.Union[None, typing.List[str]] = None,
+        party_codes: typing.Sequence[str],
+        category_ids: typing.Optional[typing.Sequence[int]] = None,
+        classifications: typing.Optional[typing.Sequence[str]] = None,
+        measure_ids: typing.Optional[typing.Sequence[int]] = None,
+        gases: typing.Optional[typing.Sequence[str]] = None,
         batch_size: int = 1000,
         progress: bool = False,
         normalize_gas_names: bool = True,
@@ -432,7 +434,11 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         return df
 
     def _select_variable_ids(
-        self, classifications, category_ids, measure_ids, gases
+        self,
+        classifications: typing.Optional[typing.Sequence],
+        category_ids: typing.Optional[typing.Sequence[int]],
+        measure_ids: typing.Optional[typing.Sequence[int]],
+        gases: typing.Optional[typing.Sequence[str]],
     ) -> typing.List[int]:
         # select variables from classification
         if classifications is None:
@@ -490,7 +496,7 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         return [int(x) for x in selected_variables.index]
 
     @staticmethod
-    def _name_id(df, name, key="name"):
+    def _name_id(df, name: str, key: str = "name") -> int:
         try:
             return int(df[df[key] == name].index[0])
         except IndexError:
@@ -517,7 +523,7 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
 
         return tree
 
-    def _get(self, component: str) -> typing.Union[dict, list]:
+    def _get(self, component: str) -> typing.Any:
         resp = requests.get(self.base_url + component)
         resp.raise_for_status()
         return resp.json()
