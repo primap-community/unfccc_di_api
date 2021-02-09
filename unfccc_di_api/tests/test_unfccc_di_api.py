@@ -34,3 +34,9 @@ def test_unified(api_reader: UNFCCCApiReader):
     match = "Unknown party *"
     with pytest.raises(ValueError, match=match):
         api_reader.query(party_code="ASDF")
+
+
+def test_unified_as_ascii(api_reader: UNFCCCApiReader):
+    # assert that using standardized string ('N2O' instead of "N₂O") works
+    ans = api_reader.query(party_code="DEU", gases=["N2O"])
+    assert len(ans) > 1

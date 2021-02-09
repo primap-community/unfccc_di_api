@@ -22,6 +22,27 @@ import pandas as pd
 import requests
 import treelib
 
+# mapping from gas as simple string to subscript-format used by UNFCCC DI API
+GAS_MAPPING = {
+    'CH4': 'CH₄',
+    'CO2': 'CO₂',
+    'N2O': 'N₂O',
+    'NF3': 'NF₃',
+    'SF6': 'SF₆',
+    'CF4': 'CF₄',
+    'C2F6': 'C₂F₆',
+    'c-C3F6': 'c-C₃F₆',
+    'C3F8': 'C₃F₈',
+    'c-C4F8': 'c-C₄F₈',
+    'C4F10': 'C₄F₁₀',
+    'C5F12': 'C5F₁₂',  # this seems to be a typo in the UNFCCC API
+    'C6F14': 'C₆F₁₄',
+    'C10F18': 'C₁₀F₁₈',
+    'NH3': 'NH₃',
+    'NOx': 'NOₓ',
+    'SO2': 'SO₂'
+}
+
 
 class UNFCCCApiReader:
     """Provides simplified unified access to the Flexible Query API of the UNFCCC data
@@ -81,7 +102,8 @@ class UNFCCCApiReader:
             :py:attr:`~UNFCCCApiReader.parties`.
         gases : list of str, optional
             Limit the query to these gases. For possible values, see
-            :py:attr:`~UNFCCCApiReader.gases`. Default: query for all gases.
+            :py:attr:`~UNFCCCApiReader.gases`. Accepts subscripts ("N₂O")
+            as well as ASCII-strings ("N2O"). Default: query for all gases.
         progress : bool
             Display a progress bar. Requires the :py:mod:`tqdm` library. Default: false.
 
@@ -97,6 +119,11 @@ class UNFCCCApiReader:
         corresponding methods :py:meth:`UNFCCCApiReader.annex_one_reader.query` and
         :py:meth:`UNFCCCApiReader.non_annex_one_reader.query`.
         """
+        # format gases to subscript notation
+        if gases is not None:
+            gases = [GAS_MAPPING.get(g, g) for g in gases]
+
+        # select corresponding reader
         if party_code in self.annex_one_reader.parties["code"].values:
             reader = self.annex_one_reader
         elif party_code in self.non_annex_one_reader.parties["code"].values:
