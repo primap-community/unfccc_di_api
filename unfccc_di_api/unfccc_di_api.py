@@ -44,8 +44,8 @@ GAS_MAPPING = {
 }
 
 # mapping of subscript notation to ASCII string
-NORMALSCRIPT = '0123456789x'
-SUBSCRIPT = '₀₁₂₃₄₅₆₇₈₉ₓ'
+NORMALSCRIPT = "0123456789x"
+SUBSCRIPT = "₀₁₂₃₄₅₆₇₈₉ₓ"
 MAKE_ASCII = str.maketrans(SUBSCRIPT, NORMALSCRIPT)
 
 
