@@ -1,7 +1,7 @@
 Developers
 ----------
 
-* Mika Pflüger <mika.pflueger@pik-potsdam.de>
+* Mika Pflüger `<mika.pflueger@pik-potsdam.de>`_
 
 Contributors
 ------------
