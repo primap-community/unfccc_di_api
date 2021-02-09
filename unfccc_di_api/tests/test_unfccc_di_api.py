@@ -36,7 +36,10 @@ def test_unified(api_reader: UNFCCCApiReader):
         api_reader.query(party_code="ASDF")
 
 
-def test_unified_as_ascii(api_reader: UNFCCCApiReader):
+@pytest.mark.parametrize("normalize", [True, False])
+def test_unified_as_ascii(api_reader: UNFCCCApiReader, normalize: bool):
     # assert that using standardized string ('N2O' instead of "N₂O") works
-    ans = api_reader.query(party_code="DEU", gases=["N2O"])
+    ans = api_reader.query(party_code="DEU", gases=["N2O"],
+                           normalize_gas_names=normalize)
     assert len(ans) > 1
+    assert ans.gas.unique()[0] == ("N2O" if normalize else "N₂O")
