@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Next release
+------------
+
+* Accept ASCII format for `gases` when querying data
+  and return gases & units normalized to ASCII (optional).
+
 1.1.1 (2021-02-08)
 ------------------
 
