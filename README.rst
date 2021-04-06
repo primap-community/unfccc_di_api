@@ -7,8 +7,8 @@ UNFCCC DI API
         :target: https://pypi.python.org/pypi/unfccc_di_api
         :alt: PyPI release
 
-.. image:: https://readthedocs.org/projects/unfccc-di-api/badge/?version=latest
-        :target: https://unfccc-di-api.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/unfccc-di-api/badge/?version=main
+        :target: https://unfccc-di-api.readthedocs.io/en/latest/?badge=main
         :alt: Documentation
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4525036.svg
