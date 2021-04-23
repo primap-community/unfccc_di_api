@@ -115,11 +115,3 @@ a release on zenodo. Use the new DOI from zenodo to update the citation informat
 zenodo DOI badge.
 
 $ make release
-
-
-Badges
-------
-
-.. image:: https://results.pre-commit.ci/badge/github/pik-primap/unfccc_di_api/main.svg
-   :target: https://results.pre-commit.ci/latest/github/pik-primap/unfccc_di_api/main
-   :alt: pre-commit.ci status

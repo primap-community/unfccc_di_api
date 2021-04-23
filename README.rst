@@ -42,3 +42,10 @@ Data package
 ------------
 If you just want all the data in CSV and parquet format (suitable for reading with
 pandas), look at our `data package <https://doi.org/10.5281/zenodo.4199622>`_.
+
+CI status and other links
+-------------------------
+
+.. image:: https://results.pre-commit.ci/badge/github/pik-primap/unfccc_di_api/main.svg
+   :target: https://results.pre-commit.ci/latest/github/pik-primap/unfccc_di_api/main
+   :alt: pre-commit.ci status
