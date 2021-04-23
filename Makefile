@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help lint
+.PHONY: clean clean-test clean-pyc clean-build docs help update-venv install-pre-commit test test-full lint coverage release update-citation
 .DEFAULT_GOAL := help
 
 define PRINT_HELP_PYSCRIPT
@@ -42,6 +42,9 @@ lint: venv ## check style with pre-commit hooks
 test: venv ## run tests quickly with the default Python
 	venv/bin/pytest
 
+test-full: venv ## run tests with all Python versions; needs python versions already set up
+	tox
+
 coverage: venv ## check code coverage quickly with the default Python
 	venv/bin/coverage run --source unfccc_di_api -m pytest
 	venv/bin/coverage report -m
@@ -54,12 +57,11 @@ docs: venv ## generate Sphinx HTML documentation
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
-release: venv dist ## package and upload a release
+release: dist ## package and upload a release
 	venv/bin/twine upload dist/*
 
 dist: clean venv ## builds source and wheel package
-	venv/bin/python setup.py sdist
-	venv/bin/python setup.py bdist_wheel
+	venv/bin/python -m build
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
@@ -67,11 +69,19 @@ install: clean ## install the package to the active Python's site-packages
 
 virtual-environment: venv ## setup a virtual environment for development
 
-venv: requirements_dev.txt setup.py
+venv: setup.py pyproject.toml setup.cfg
 	[ -d venv ] || python3 -m venv venv
-	venv/bin/python -m pip install -r requirements_dev.txt
-	venv/bin/python -m pip install -e .
+	venv/bin/python -m pip install -e .[dev]
+	touch venv
+
+update-venv:  ## update the development virtual environment
+	[ -d venv ] || python3 -m venv venv
+	venv/bin/python -m pip install --upgrade -e .[dev]
 	touch venv
 
 install-pre-commit: venv ## install the pre-commit hooks
 	venv/bin/pre-commit install
+
+update-citation: ## Update the citation information from zenodo
+	venv/bin/python update_citation_info.py
+	git commit -am 'Update citation information from zenodo.'

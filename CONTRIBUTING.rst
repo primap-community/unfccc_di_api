@@ -102,16 +102,19 @@ Before you submit a pull request, check that it meets these guidelines:
 Deploying
 ---------
 
+.. highlight:: shell
+
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in CHANGELOG.rst).
-Then run::
 
-$ bump2version patch # possible: major / minor / patch
-$ git push
-$ git push --tags
-
-Then, go to github and make a release from the tag. That will automatically trigger
-a release on zenodo. Use the new DOI from zenodo to update the citation information and
-zenodo DOI badge.
-
-$ make release
+1.  Commit all your changes.
+2.  Replace the unreleased entry in CHANGELOG.rst with your target version number.
+3.  Run ``tbump X.Y.Z``.
+4.  Go to github and make a release from the tag.
+    Use "Version x.y.z" as the release title, and the changelog entries as the release
+    description.
+    Creating the github release will automatically trigger
+    a release on zenodo.
+5.  Run ``make update-citation`` to update the citation information in the README.
+6.  Upload the release to pyPI: ``make release``
+7.  To prepare for future development, add a new "unreleased" section to CHANGELOG.rst,
+    and commit the result.
