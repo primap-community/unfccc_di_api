@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+* Fix pre-commit config for newer mypy type checking versions.
+
 2.0.1 (2021-04-23)
 ------------------
 
