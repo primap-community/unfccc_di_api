@@ -41,7 +41,7 @@ Zenodo. https://doi.org/10.5281/zenodo.4525036
 Data package
 ------------
 If you just want all the data in CSV and parquet format (suitable for reading with
-pandas), look at our `data package <https://doi.org/10.5281/zenodo.4199622>`_.
+pandas), look at our `data package <https://doi.org/10.5281/zenodo.4198782>`_.
 
 CI status and other links
 -------------------------
