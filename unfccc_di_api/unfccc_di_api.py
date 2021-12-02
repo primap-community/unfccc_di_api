@@ -49,6 +49,15 @@ SUBSCRIPT = "₀₁₂₃₄₅₆₇₈₉ₓ"
 MAKE_ASCII = str.maketrans(SUBSCRIPT, NORMALSCRIPT)
 
 
+class NoDataError(KeyError):
+    """Query returned no data"""
+
+    def __init__(
+        self,
+    ):
+        KeyError.__init__(self, "")  # TODO
+
+
 class UNFCCCApiReader:
     """Provides simplified unified access to the Flexible Query API of the UNFCCC data
     access for all parties.

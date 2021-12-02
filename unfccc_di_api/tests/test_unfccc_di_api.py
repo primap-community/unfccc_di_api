@@ -2,6 +2,7 @@
 
 import pytest
 
+import unfccc_di_api
 from unfccc_di_api import UNFCCCApiReader
 
 
@@ -44,3 +45,8 @@ def test_unified_as_ascii(api_reader: UNFCCCApiReader, normalize: bool):
     )
     assert len(ans) > 1
     assert ans.gas.unique()[0] == ("N2O" if normalize else "N₂O")
+
+
+def test_no_data(api_reader: UNFCCCApiReader):
+    with pytest.raises(unfccc_di_api.NoDataError):
+        api_reader.annex_one_reader.query(party_codes=["FIN"], category_ids=[14817])
