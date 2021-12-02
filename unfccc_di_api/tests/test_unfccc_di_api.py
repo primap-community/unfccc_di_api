@@ -1,6 +1,5 @@
 """Tests for the `unfccc_di_api` package."""
 
-import pandas as pd
 import pytest
 
 from unfccc_di_api import UNFCCCApiReader
@@ -55,10 +54,3 @@ def test_category_filter(api_reader: UNFCCCApiReader, category_id):
         party_codes=["DEU"], category_ids=[category_id]
     )
     assert len(df["category"].unique()) == 1
-
-
-def test_duplicate_category_ids(api_reader: UNFCCCApiReader):
-    # both "other"
-    df1 = api_reader.annex_one_reader.query(party_codes=["DEU"], category_ids=[10476])
-    df2 = api_reader.annex_one_reader.query(party_codes=["DEU"], category_ids=[10485])
-    assert pd.testing.assert_frame_equal(df1, df2)
