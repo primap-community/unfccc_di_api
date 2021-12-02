@@ -5,6 +5,11 @@ Changelog
 Unreleased
 ----------
 
+* Fix handling of duplicate variable IDs. **Note**: This entails changes to the public
+  API! In particular, UNFCCCSingleCategoryApiReader.variables now has a generic index
+  instead of using the ``variableId`` as index. Also, the ``query`` function now
+  correctly restricts queries if ``category_ids`` are provided and correctly fills
+  all categories with data for a multi-category variable.
 * Fix pre-commit config for newer mypy type checking versions.
 
 2.0.1 (2021-04-23)
