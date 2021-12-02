@@ -1,5 +1,6 @@
 """Tests for the `unfccc_di_api` package."""
 
+import pandas as pd
 import pytest
 
 from unfccc_di_api import UNFCCCApiReader
@@ -44,3 +45,20 @@ def test_unified_as_ascii(api_reader: UNFCCCApiReader, normalize: bool):
     )
     assert len(ans) > 1
     assert ans.gas.unique()[0] == ("N2O" if normalize else "N₂O")
+
+
+@pytest.mark.parametrize("category_id", [9559, 9608])
+def test_category_filter(api_reader: UNFCCCApiReader, category_id):
+    # this failed due to duplicate variableIds
+    # see https://github.com/pik-primap/unfccc_di_api/issues/28
+    df = api_reader.annex_one_reader.query(
+        party_codes=["DEU"], category_ids=[category_id]
+    )
+    assert len(df["category"].unique()) == 1
+
+
+def test_duplicate_category_ids(api_reader: UNFCCCApiReader):
+    # both "other"
+    df1 = api_reader.annex_one_reader.query(party_codes=["DEU"], category_ids=[10476])
+    df2 = api_reader.annex_one_reader.query(party_codes=["DEU"], category_ids=[10485])
+    assert pd.testing.assert_frame_equal(df1, df2)
