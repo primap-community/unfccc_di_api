@@ -12,6 +12,6 @@ __author__ = """Mika Pflüger"""
 __email__ = "mika.pflueger@pik-potsdam.de"
 __version__ = "2.0.1"
 
-from .unfccc_di_api import UNFCCCApiReader, UNFCCCSingleCategoryApiReader
+from .unfccc_di_api import NoDataError, UNFCCCApiReader, UNFCCCSingleCategoryApiReader
 
-__all__ = ["UNFCCCApiReader", "UNFCCCSingleCategoryApiReader"]
+__all__ = ["UNFCCCApiReader", "UNFCCCSingleCategoryApiReader", "NoDataError"]

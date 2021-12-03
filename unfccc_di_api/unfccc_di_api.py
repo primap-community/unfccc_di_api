@@ -49,6 +49,29 @@ SUBSCRIPT = "₀₁₂₃₄₅₆₇₈₉ₓ"
 MAKE_ASCII = str.maketrans(SUBSCRIPT, NORMALSCRIPT)
 
 
+class NoDataError(KeyError):
+    """Query returned no data."""
+
+    def __init__(
+        self,
+        party_codes: typing.Sequence[str],
+        category_ids: typing.Optional[typing.Sequence[int]] = None,
+        classifications: typing.Optional[typing.Sequence[str]] = None,
+        measure_ids: typing.Optional[typing.Sequence[int]] = None,
+        gases: typing.Optional[typing.Sequence[str]] = None,
+    ):
+        query = f"party_codes={party_codes!r}"
+        for optional_param, key in (
+            (category_ids, "category_ids"),
+            (classifications, "classifications"),
+            (measure_ids, "measure_ids"),
+            (gases, "gases"),
+        ):
+            if optional_param is not None:
+                query += f" {key}={optional_param!r}"
+        KeyError.__init__(self, f"Query returned no data for: {query}")
+
+
 class UNFCCCApiReader:
     """Provides simplified unified access to the Flexible Query API of the UNFCCC data
     access for all parties.
@@ -389,6 +412,15 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
 
         if progress:
             pbar.close()
+
+        if not raw_response:
+            raise NoDataError(
+                party_codes=party_codes,
+                category_ids=category_ids,
+                classifications=classifications,
+                measure_ids=measure_ids,
+                gases=gases,
+            )
 
         df = self._parse_raw_answer(raw_response)
 
