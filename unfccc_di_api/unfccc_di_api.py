@@ -278,14 +278,18 @@ class UNFCCCSingleCategoryApiReader:
         self._units_dict = dict(self.units["name"])
         self.conversion_factors = pd.DataFrame(unit_info[party_category])
 
-        # variable IDs are not unique, because category names are not unique
-        # just give up and delete the duplicated ones
-        variables_raw = self._get(f"variables/fq/{party_category}")
-        self.variables = (
-            pd.DataFrame(variables_raw).set_index("variableId").sort_index()
+        # variable IDs are not unique
+        variables_raw: typing.List[typing.Dict[str, int]] = self._get(
+            f"variables/fq/{party_category}"
         )
-        self.variables = self.variables[~self.variables.index.duplicated(keep="first")]
-        self._variables_dict = {x["variableId"]: x for x in variables_raw}
+        self.variables = pd.DataFrame(variables_raw)
+        self._variables_dict: typing.Dict[int, typing.List[typing.Dict[str, int]]] = {}
+        for var in variables_raw:
+            vid = var["variableId"]
+            if vid in self._variables_dict:
+                self._variables_dict[vid].append(var)
+            else:
+                self._variables_dict[vid] = [var]
 
     def _flexible_query(
         self,
@@ -386,8 +390,17 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         # always query all years
         year_ids = list(self.years.index)
 
+        classification_ids = (
+            None
+            if classifications is None
+            else [self._name_id(self.classifications, c) for c in classifications]
+        )
+        gas_ids = (
+            None if gases is None else [self._name_id(self.gases, g) for g in gases]
+        )
+
         variable_ids = self._select_variable_ids(
-            classifications, category_ids, measure_ids, gases
+            classification_ids, category_ids, measure_ids, gas_ids
         )
 
         i = 0
@@ -422,7 +435,13 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
                 gases=gases,
             )
 
-        df = self._parse_raw_answer(raw_response)
+        df = self._parse_raw_answer(
+            raw_response,
+            classification_ids=classification_ids,
+            category_ids=category_ids,
+            measure_ids=measure_ids,
+            gas_ids=gas_ids,
+        )
 
         if normalize_gas_names:
             for c in ["unit", "gas"]:
@@ -430,30 +449,50 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
 
         return df
 
-    def _parse_raw_answer(self, raw: typing.List[dict]) -> pd.DataFrame:
+    @staticmethod
+    def _id_in(vid: int, seq: typing.Optional[typing.Sequence[int]]):
+        return seq is None or vid in seq
+
+    def _parse_raw_answer(
+        self,
+        raw: typing.List[dict],
+        classification_ids: typing.Optional[typing.Sequence[int]],
+        category_ids: typing.Optional[typing.Sequence[int]],
+        measure_ids: typing.Optional[typing.Sequence[int]],
+        gas_ids: typing.Optional[typing.Sequence[int]],
+    ) -> pd.DataFrame:
         data = []
         for dp in raw:
-            variable = self._variables_dict[dp["variableId"]]
+            variables = self._variables_dict[dp["variableId"]]
 
-            try:
-                category = self.category_tree[variable["categoryId"]].tag
-            except treelib.tree.NodeIDAbsentError:
-                category = f'unknown category nr. {variable["categoryId"]}'
+            for variable in variables:
+                if (
+                    not self._id_in(variable["classificationId"], classification_ids)
+                    or not self._id_in(variable["categoryId"], category_ids)
+                    or not self._id_in(variable["measureId"], measure_ids)
+                    or not self._id_in(variable["gasId"], gas_ids)
+                ):
+                    continue
 
-            row = {
-                "party": self._parties_dict[dp["partyId"]],
-                "category": category,
-                "classification": self._classifications_dict[
-                    variable["classificationId"]
-                ],
-                "measure": self.measure_tree[variable["measureId"]].tag,
-                "gas": self._gases_dict[variable["gasId"]],
-                "unit": self._units_dict[variable["unitId"]],
-                "year": self._years_dict[dp["yearId"]],
-                "numberValue": dp["numberValue"],
-                "stringValue": dp["stringValue"],
-            }
-            data.append(row)
+                try:
+                    category = self.category_tree[variable["categoryId"]].tag
+                except treelib.tree.NodeIDAbsentError:
+                    category = f'unknown category nr. {variable["categoryId"]}'
+
+                row = {
+                    "party": self._parties_dict[dp["partyId"]],
+                    "category": category,
+                    "classification": self._classifications_dict[
+                        variable["classificationId"]
+                    ],
+                    "measure": self.measure_tree[variable["measureId"]].tag,
+                    "gas": self._gases_dict[variable["gasId"]],
+                    "unit": self._units_dict[variable["unitId"]],
+                    "year": self._years_dict[dp["yearId"]],
+                    "numberValue": dp["numberValue"],
+                    "stringValue": dp["stringValue"],
+                }
+                data.append(row)
 
         df = pd.DataFrame(data)
         df.sort_values(
@@ -467,13 +506,13 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
 
     def _select_variable_ids(
         self,
-        classifications: typing.Optional[typing.Sequence],
+        classification_ids: typing.Optional[typing.Sequence[int]],
         category_ids: typing.Optional[typing.Sequence[int]],
         measure_ids: typing.Optional[typing.Sequence[int]],
-        gases: typing.Optional[typing.Sequence[str]],
+        gas_ids: typing.Optional[typing.Sequence[int]],
     ) -> typing.List[int]:
         # select variables from classification
-        if classifications is None:
+        if classification_ids is None:
             classification_mask = pd.Series(
                 data=[True] * len(self.variables), index=self.variables.index
             )
@@ -481,8 +520,7 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
             classification_mask = pd.Series(
                 data=[False] * len(self.variables), index=self.variables.index
             )
-            for classification in classifications:
-                cid = self._name_id(self.classifications, classification)
+            for cid in classification_ids:
                 classification_mask[self.variables["classificationId"] == cid] = True
 
         # select variables from categories
@@ -510,7 +548,7 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
                 measure_mask[self.variables["measureId"] == mid] = True
 
         # select variables from gases
-        if gases is None:
+        if gas_ids is None:
             gas_mask = pd.Series(
                 data=[True] * len(self.variables), index=self.variables.index
             )
@@ -518,14 +556,14 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
             gas_mask = pd.Series(
                 data=[False] * len(self.variables), index=self.variables.index
             )
-            for gas in gases:
-                gid = self._name_id(self.gases, gas)
+            for gid in gas_ids:
                 gas_mask[self.variables["gasId"] == gid] = True
 
         selected_variables = self.variables[
             classification_mask & category_mask & measure_mask & gas_mask
         ]
-        return [int(x) for x in selected_variables.index]
+        # need to explicitly convert to python integer, not int64 for json serialization
+        return [int(x) for x in selected_variables["variableId"].unique()]
 
     @staticmethod
     def _name_id(df, name: str, key: str = "name") -> int:
