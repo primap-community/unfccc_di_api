@@ -42,7 +42,7 @@ lint: venv ## check style with pre-commit hooks
 test: venv ## run tests quickly with the default Python
 	venv/bin/pytest
 
-test-full: venv ## run tests with all Python versions; needs python versions already set up
+test-all: venv ## run tests with all Python versions; needs python versions already set up
 	tox
 
 coverage: venv ## check code coverage quickly with the default Python

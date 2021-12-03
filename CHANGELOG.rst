@@ -5,6 +5,7 @@ Changelog
 Unreleased
 ----------
 
+* Support python 3.10.
 * Fix handling of duplicate variable IDs. **Note**: This entails changes to the public
   API! In particular, UNFCCCSingleCategoryApiReader.variables now has a generic index
   instead of using the ``variableId`` as index. Also, the ``query`` function now
