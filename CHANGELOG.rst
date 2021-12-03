@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+3.0.0 (2021-12-03)
+------------------
 
 * Support python 3.10.
 * Fix handling of duplicate variable IDs. **Note**: This entails changes to the public
