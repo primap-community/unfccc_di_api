@@ -34,7 +34,7 @@ Citation
 --------
 If you use this library and want to cite it, please cite it as:
 
-Mika Pflüger & Daniel Huppmann. (2021-12-03).
+Mika Pflüger, Daniel Huppmann & Johannes Gütschow. (2021-12-03).
 pik-primap/unfccc_di_api: Version 3.0.0.
 Zenodo. https://doi.org/10.5281/zenodo.5751935
 
