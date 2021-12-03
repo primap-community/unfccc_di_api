@@ -11,6 +11,8 @@ Unreleased
   correctly restricts queries if ``category_ids`` are provided and correctly fills
   all categories with data for a multi-category variable.
 * Fix pre-commit config for newer mypy type checking versions.
+* Raise a more informative NoDataError (subclass of KeyError) instead of a generic
+  KeyError when a query result is empty.
 
 2.0.1 (2021-04-23)
 ------------------
