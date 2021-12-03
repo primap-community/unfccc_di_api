@@ -425,7 +425,7 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
 
         if progress:
             pbar.close()
-        
+
         if not raw_response:
             raise NoDataError(
                 party_codes=party_codes,

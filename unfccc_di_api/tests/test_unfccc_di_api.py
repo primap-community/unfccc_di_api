@@ -56,8 +56,7 @@ def test_category_filter(api_reader: UNFCCCApiReader, category_id):
     )
     assert len(df["category"].unique()) == 1
 
-    
+
 def test_no_data(api_reader: UNFCCCApiReader):
     with pytest.raises(unfccc_di_api.NoDataError):
         api_reader.annex_one_reader.query(party_codes=["FIN"], category_ids=[14817])
-
