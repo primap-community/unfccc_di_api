@@ -5,6 +5,10 @@ Changelog
 Unreleased
 ----------
 
+* Fix handling of unspecified measure IDs. The DI API started returning measure IDs
+  without a name or description. We now call them ``unknown measure nr. {measureId}``
+  instead of erroring out.
+
 3.0.0 (2021-12-03)
 ------------------
 
