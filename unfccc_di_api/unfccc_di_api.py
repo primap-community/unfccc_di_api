@@ -479,13 +479,18 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
                 except treelib.tree.NodeIDAbsentError:
                     category = f'unknown category nr. {variable["categoryId"]}'
 
+                try:
+                    measure = self.measure_tree[variable["measureId"]].tag
+                except treelib.tree.NodeIDAbsentError:
+                    measure = f'unknown measure nr. {variable["measureId"]}'
+
                 row = {
                     "party": self._parties_dict[dp["partyId"]],
                     "category": category,
                     "classification": self._classifications_dict[
                         variable["classificationId"]
                     ],
-                    "measure": self.measure_tree[variable["measureId"]].tag,
+                    "measure": measure,
                     "gas": self._gases_dict[variable["gasId"]],
                     "unit": self._units_dict[variable["unitId"]],
                     "year": self._years_dict[dp["yearId"]],
