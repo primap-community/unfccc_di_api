@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+3.0.1 (2022-03-15)
+------------------
 
 * Fix handling of unspecified measure IDs. The DI API started returning measure IDs
   without a name or description. We now call them ``unknown measure nr. {measureId}``
