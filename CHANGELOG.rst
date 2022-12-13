@@ -5,6 +5,9 @@ Changelog
 Unreleased
 ----------
 
+* Support python 3.11.
+* Drop support for python 3.6.
+
 3.0.1 (2022-03-15)
 ------------------
 
