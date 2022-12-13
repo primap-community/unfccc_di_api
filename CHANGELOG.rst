@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+3.0.2 (2022-12-13)
+------------------
 
 * Support python 3.11.
 * Drop support for python 3.6.
