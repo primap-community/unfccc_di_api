@@ -298,7 +298,6 @@ class UNFCCCSingleCategoryApiReader:
         party_ids: typing.Sequence[int],
         year_ids: typing.Sequence[int],
     ) -> typing.List[dict]:
-
         if len(variable_ids) > 3000:
             logging.warning(
                 "Your query parameters lead to a lot of variables selected at once. "
