@@ -5,6 +5,8 @@ Changelog
 Unreleased
 ----------
 
+* Build the documentation on ReadTheDocs using newer Python and Sphinx versions.
+
 
 3.0.2 (2022-12-13)
 ------------------
