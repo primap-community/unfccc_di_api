@@ -1,5 +1,8 @@
 version: 2
 formats: all
+build:
+  tools:
+    python: "3.10"
 python:
   version: 3
   install:
