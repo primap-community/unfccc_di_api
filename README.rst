@@ -22,6 +22,11 @@ the UNFCCC.
 * Free software: Apache Software License 2.0
 * Documentation: https://unfccc-di-api.readthedocs.io.
 
+Warning
+-------
+
+Due to a recent change in the UNFCCC's API, this package is **not** functional anymore. We are looking for a fix, but can't promise anything.
+
 
 Features
 --------
