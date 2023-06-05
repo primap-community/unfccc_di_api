@@ -25,7 +25,8 @@ the UNFCCC.
 Warning
 -------
 
-Due to a recent change in the UNFCCC's API, this package is **not** functional anymore. We are looking for a fix, but can't promise anything.
+Due to a recent change in the UNFCCC's API, this package is **not** functional
+anymore. We are looking for a fix, but can't promise anything.
 
 
 Features
