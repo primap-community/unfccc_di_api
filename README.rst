@@ -28,6 +28,7 @@ Warning
 Due to a recent change in the UNFCCC's API, the UNFCCCApiReader class is
 **not functional** any more in standard environments. To continue to access the data,
 you have two options:
+
 1. Use the new ZenodoReader. It provides access using the `query` function like the
    UNFCCCApiReader, but only supports querying for a full dataset with all data. It
    relies on our `data package <https://doi.org/10.5281/zenodo.4198782>`_, which we
