@@ -25,8 +25,17 @@ the UNFCCC.
 Warning
 -------
 
-Due to a recent change in the UNFCCC's API, this package is **not** functional
-anymore. We are looking for a fix, but can't promise anything.
+Due to a recent change in the UNFCCC's API, the UNFCCCApiReader class is
+**not functional** any more in standard environments. To continue to access the data,
+you have two options:
+1. Use the new ZenodoReader. It provides access using the `query` function like the
+   UNFCCCApiReader, but only supports querying for a full dataset with all data. It
+   relies on our `data package <https://doi.org/10.5281/zenodo.4198782>`_, which we
+   update regularly; however, the data is naturally not as recent as querying from
+   the API directly.
+2. Run your functions in an environment which is not blocked by the UNFCCC DI API.
+   According to our tests, Azure virtual machines work, as well as github hosted
+   runners, with the exception of Mac OS runners.
 
 
 Features
