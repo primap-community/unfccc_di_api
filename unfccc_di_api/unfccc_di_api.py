@@ -290,7 +290,13 @@ class UNFCCCSingleCategoryApiReader:
         """
         self.base_url = base_url
 
-        parties_raw = self._get(f"parties/{party_category}")
+        try:
+            parties_raw = self._get(f"parties/{party_category}")
+        except requests.JSONDecodeError:
+            raise RuntimeError(
+                "Access to the UNFCCC API denied - see"
+                " https://github.com/pik-primap/unfccc_di_api#warning for solutions"
+            )
         parties_entries = []
         for entry in parties_raw:
             if entry["categoryCode"] == party_category and entry["name"] != "Groups":
