@@ -5,6 +5,9 @@ Changelog
 Unreleased
 ----------
 
+* Breaking: the UNFCCC restricted API access, likely you have to change your code to
+  use the new ZenodoReader instead.
+* Add ZenodoReader which doesn't rely on API access.
 * Build the documentation on ReadTheDocs using newer Python and Sphinx versions.
 
 
