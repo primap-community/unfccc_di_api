@@ -85,8 +85,8 @@ class ZenodoReader:
 
     Attributes
     ----------
-    parties : pandas.DataFrame
-        All parties, with their ID, code, and full name.
+    parties : list[str]
+        All parties as a 3-letter iso code.
     """
 
     def __init__(
