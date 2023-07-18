@@ -129,9 +129,15 @@ class ZenodoReader:
         gases : list of str, optional
             Limit the query to these gases. Accepts subscripts ("N₂O")
             as well as ASCII-strings ("N2O"). Default: query for all gases.
+            Note that anything else than the default is not yet implemented and raises
+            an error. Just request the whole dataset and filter using pandas' normal
+            functionality.
         normalize_gas_names : bool, optional
             If :obj:`True`, return gases as ASCII strings ("N2O").
             Else, return native UNFCCC notation ("N₂O"). Default: true.
+            Note that anything else than the default is not implemented and raises an
+            error. If you require unnormalized gas names, open an issue in the issue
+            tracker at github so we can understand your use case.
 
         Returns
         -------
