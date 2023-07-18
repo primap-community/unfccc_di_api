@@ -8,6 +8,7 @@ Unreleased
 * Breaking: the UNFCCC restricted API access, likely you have to change your code to
   use the new ZenodoReader instead.
 * Add ZenodoReader which doesn't rely on API access.
+* Use data released until 2023-07-18 when using the ZenodoReader.
 * Build the documentation on ReadTheDocs using newer Python and Sphinx versions.
 
 
