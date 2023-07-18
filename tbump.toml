@@ -32,7 +32,7 @@ search = '__version__ = "{current_version}"'
 
 [[file]]
 src = "README.rst"
-search = 'pik-primap/unfccc_di_api: Version {current_version}.'
+search = 'pik-primap/unfccc_di_api: unfccc_di_api version {current_version}.'
 
 # You can specify a list of commands to
 # run after the files have been patched
