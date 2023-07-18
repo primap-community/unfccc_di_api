@@ -24,6 +24,13 @@ def reader(request):
         return ZenodoReader()
 
 
+def test_not_implemented(zenodo_reader):
+    with pytest.raises(NotImplementedError):
+        zenodo_reader.query(party_code="DEU", gases=["N2O"])
+    with pytest.raises(NotImplementedError):
+        zenodo_reader.query(party_code="DEU", normalize_gas_names=False)
+
+
 def test_non_annex_one(api_reader):
     ans = api_reader.non_annex_one_reader.query(party_codes=["MMR"])
 
