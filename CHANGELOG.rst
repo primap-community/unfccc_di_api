@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+4.0.0 (2023-07-18)
+------------------
 
 * Breaking: the UNFCCC restricted API access, likely you have to change your code to
   use the new ZenodoReader instead.
