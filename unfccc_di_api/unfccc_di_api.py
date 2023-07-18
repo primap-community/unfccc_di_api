@@ -17,8 +17,10 @@ limitations under the License.
 import itertools
 import logging
 import typing
+import zipfile
 
 import pandas as pd
+import pooch
 import requests
 import treelib
 
@@ -70,6 +72,76 @@ class NoDataError(KeyError):
             if optional_param is not None:
                 query += f" {key}={optional_param!r}"
         KeyError.__init__(self, f"Query returned no data for: {query}")
+
+
+class ZenodoReader:
+    """Provides simplified unified access to the data provided by the Flexible Query
+    API of the UNFCCC data access, via the dataset stored at zenodo.
+
+    Essentially gives you the same API as the UNFCCCApiReader, but without complications
+    due to the protection measures of the DI API. The advantage of using the
+    ZenodoReader is that it works reliably without special measures, the disadvantage
+    is that the data might be a bit older.
+
+    Attributes
+    ----------
+    parties : pandas.DataFrame
+        All parties, with their ID, code, and full name.
+    """
+
+    def __init__(
+        self,
+        *,
+        url: str = "doi:10.5281/zenodo.7432088/data-2022-12-13.zip",
+        known_hash: str = "md5:e7f660f88425078c75093d19841e5815",
+    ):
+        self._zipfile_path = pooch.retrieve(url=url, known_hash=known_hash)
+        self._zipfile = zipfile.ZipFile(self._zipfile_path)
+        self.parties = [
+            x.split("/")[-1][:3]
+            for x in self._zipfile.namelist()
+            if x.endswith(".parquet")
+        ]
+
+    def _get_party_data(self, *, party: str) -> pd.DataFrame:
+        fnames = [x for x in self._zipfile.namelist() if x.endswith(f"{party}.parquet")]
+        try:
+            fname = fnames[0]
+        except IndexError:
+            raise ValueError(f"Unknown party: {party}.")
+        with self._zipfile.open(fname) as fd:
+            return pd.read_parquet(fd)
+
+    def query(
+        self,
+        *,
+        party_code: str,
+        gases: typing.Optional[typing.Sequence[str]] = None,
+        normalize_gas_names: bool = True,
+    ) -> pd.DataFrame:
+        """Query the dataset for party data.
+
+        Parameters
+        ----------
+        party_code : str
+            ISO code of a party for which to query. For possible values, see
+            :py:attr:`~ZenodoReader.parties`.
+        gases : list of str, optional
+            Limit the query to these gases. Accepts subscripts ("N₂O")
+            as well as ASCII-strings ("N2O"). Default: query for all gases.
+        normalize_gas_names : bool, optional
+            If :obj:`True`, return gases as ASCII strings ("N2O").
+            Else, return native UNFCCC notation ("N₂O"). Default: true.
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
+        if not normalize_gas_names:
+            raise NotImplementedError("Non-normalized gases not yet implemented")
+        if gases is not None:
+            raise NotImplementedError("Specific gas lists not yet implemented")
+        return self._get_party_data(party=party_code)
 
 
 class UNFCCCApiReader:

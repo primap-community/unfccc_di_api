@@ -3,7 +3,7 @@
 import pytest
 
 import unfccc_di_api
-from unfccc_di_api import UNFCCCApiReader
+from unfccc_di_api import UNFCCCApiReader, ZenodoReader
 
 
 @pytest.fixture(scope="module")
@@ -11,7 +11,20 @@ def api_reader() -> UNFCCCApiReader:
     return UNFCCCApiReader()
 
 
-def test_non_annex_one(api_reader: UNFCCCApiReader):
+@pytest.fixture(scope="module")
+def zenodo_reader() -> ZenodoReader:
+    return ZenodoReader()
+
+
+@pytest.fixture(scope="module", params=["unfccc", "zenodo"])
+def reader(request):
+    if request.param == "unfccc":
+        return UNFCCCApiReader()
+    if request.param == "zenodo":
+        return ZenodoReader()
+
+
+def test_non_annex_one(api_reader):
     ans = api_reader.non_annex_one_reader.query(party_codes=["MMR"])
 
     match = "Unknown party *"
@@ -26,15 +39,18 @@ def test_annex_one(api_reader: UNFCCCApiReader):
     assert len(ans) > 1
 
 
-def test_unified(api_reader: UNFCCCApiReader):
-    ans = api_reader.query(party_code="AFG")
-    assert len(ans) > 1
-    ans = api_reader.query(party_code="DEU", gases=["N₂O"])
+def test_unified(reader):
+    ans = reader.query(party_code="AFG")
     assert len(ans) > 1
 
     match = "Unknown party *"
     with pytest.raises(ValueError, match=match):
-        api_reader.query(party_code="ASDF")
+        reader.query(party_code="ASDF")
+
+
+def test_unified_gases(api_reader: UNFCCCApiReader):
+    ans = api_reader.query(party_code="DEU", gases=["N₂O"])
+    assert len(ans) > 1
 
 
 @pytest.mark.parametrize("normalize", [True, False])
