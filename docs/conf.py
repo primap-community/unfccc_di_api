@@ -55,7 +55,8 @@ master_doc = "index"
 
 # General information about the project.
 project = "UNFCCC DI API"
-copyright = "2020-2021, Potsdam Institute for Climate Impact Research (PIK) e. V."
+copyright = """2020-2021, Potsdam Institute for Climate Impact Research (PIK) e. V.
+2023, Climate Resource Pty Ltd"""
 author = "Mika Pflüger"
 
 # The version info for the project you're documenting, acts as replacement
