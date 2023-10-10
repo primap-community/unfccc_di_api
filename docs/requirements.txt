@@ -2,3 +2,4 @@
 ipykernel
 nbsphinx
 Sphinx >= 6
+sphinx_rtd_theme
