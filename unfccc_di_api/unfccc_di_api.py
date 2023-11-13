@@ -23,6 +23,8 @@ import pandas as pd
 import pooch
 import requests
 import treelib
+from fake_useragent import UserAgent
+
 
 # mapping from gas as simple string to subscript-format used by UNFCCC DI API
 GAS_MAPPING = {
@@ -682,11 +684,11 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         return tree
 
     def _get(self, component: str) -> typing.Any:
-        resp = requests.get(self.base_url + component)
+        resp = requests.get(self.base_url + component, headers={"User-Agent": UserAgent().random})
         resp.raise_for_status()
         return resp.json()
 
     def _post(self, component: str, json: dict) -> typing.List[dict]:
-        resp = requests.post(self.base_url + component, json=json)
+        resp = requests.post(self.base_url + component, json=json, headers={"User-Agent": UserAgent().random})
         resp.raise_for_status()
         return resp.json()
