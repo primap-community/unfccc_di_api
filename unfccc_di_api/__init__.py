@@ -10,7 +10,7 @@ which are available at :py:attr:`UNFCCCApiReader.annex_one_reader` and
 
 __author__ = """Mika Pflüger"""
 __email__ = "mika.pflueger@pik-potsdam.de"
-__version__ = "4.0.0"
+__version__ = "4.0.1"
 
 from .unfccc_di_api import (
     NoDataError,
