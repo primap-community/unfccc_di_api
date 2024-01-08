@@ -2,6 +2,12 @@
 Changelog
 =========
 
+4.0.1 (2024-01-08)
+------------------
+
+* Use data released until 2023-01-08 when using the ZenodoReader.
+* Support python 3.12.
+
 4.0.0 (2023-07-18)
 ------------------
 
@@ -10,7 +16,6 @@ Changelog
 * Add ZenodoReader which doesn't rely on API access.
 * Use data released until 2023-07-18 when using the ZenodoReader.
 * Build the documentation on ReadTheDocs using newer Python and Sphinx versions.
-
 
 3.0.2 (2022-12-13)
 ------------------

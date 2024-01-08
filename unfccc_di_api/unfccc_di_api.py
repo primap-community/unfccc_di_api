@@ -93,8 +93,8 @@ class ZenodoReader:
     def __init__(
         self,
         *,
-        url: str = "doi:10.5281/zenodo.8159736/parquet-only.zip",
-        known_hash: str = "md5:95d98404f642ed2b684594abba8934ba",
+        url: str = "doi:10.5281/zenodo.10470862/parquet-only.zip",
+        known_hash: str = "md5:52dd6cc26f1c2eb3f8204c6a78d2e7ba",
     ):
         self._zipfile_path = pooch.retrieve(url=url, known_hash=known_hash)
         self._zipfile = zipfile.ZipFile(self._zipfile_path)
@@ -109,7 +109,7 @@ class ZenodoReader:
         try:
             fname = fnames[0]
         except IndexError:
-            raise ValueError(f"Unknown party: {party}.")
+            raise ValueError(f"Unknown party: {party}.") from None
         with self._zipfile.open(fname) as fd:
             return pd.read_parquet(fd)
 
@@ -299,11 +299,11 @@ class UNFCCCSingleCategoryApiReader:
 
         try:
             parties_raw = self._get(f"parties/{party_category}")
-        except requests.JSONDecodeError:
+        except requests.JSONDecodeError as e:
             raise RuntimeError(
                 "Access to the UNFCCC API denied - see"
                 " https://github.com/pik-primap/unfccc_di_api#warning for solutions"
-            )
+            ) from e
         parties_entries = []
         for entry in parties_raw:
             if entry["categoryCode"] == party_category and entry["name"] != "Groups":
@@ -469,7 +469,7 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
                     "try `UNFCCCSingleCategoryApiReader.parties` for a list of"
                     " valid codes"
                 )
-                raise ValueError(f"Unknown party `{code}`, {help}!")
+                raise ValueError(f"Unknown party `{code}`, {help}!") from None
 
         # always query all years
         year_ids = list(self.years.index)
@@ -584,9 +584,8 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
                 data.append(row)
 
         df = pd.DataFrame(data)
-        df.sort_values(
+        df = df.sort_values(
             ["party", "category", "classification", "measure", "gas", "unit", "year"],
-            inplace=True,
         )
         df.drop_duplicates(inplace=True)
         df.reset_index(inplace=True, drop=True)
@@ -659,7 +658,7 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         try:
             return int(df[df[key] == name].index[0])
         except IndexError:
-            raise KeyError(name)
+            raise KeyError(name) from None
 
     def show_category_hierarchy(self) -> None:
         """Print the hierarchy of categories and their IDs."""
