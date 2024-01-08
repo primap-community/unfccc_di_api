@@ -5,7 +5,7 @@ Changelog
 4.0.1 (2024-01-08)
 ------------------
 
-* Use data released until 2023-01-08 when using the ZenodoReader.
+* Use data released until 2024-01-08 when using the ZenodoReader.
 * Support python 3.12.
 
 4.0.0 (2023-07-18)
