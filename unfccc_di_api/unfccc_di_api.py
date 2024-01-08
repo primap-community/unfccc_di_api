@@ -93,8 +93,8 @@ class ZenodoReader:
     def __init__(
         self,
         *,
-        url: str = "doi:10.5281/zenodo.8159736/parquet-only.zip",
-        known_hash: str = "md5:95d98404f642ed2b684594abba8934ba",
+        url: str = "doi:10.5281/zenodo.10470862/parquet-only.zip",
+        known_hash: str = "md5:52dd6cc26f1c2eb3f8204c6a78d2e7ba",
     ):
         self._zipfile_path = pooch.retrieve(url=url, known_hash=known_hash)
         self._zipfile = zipfile.ZipFile(self._zipfile_path)
@@ -109,7 +109,7 @@ class ZenodoReader:
         try:
             fname = fnames[0]
         except IndexError:
-            raise ValueError(f"Unknown party: {party}.")
+            raise ValueError(f"Unknown party: {party}.") from None
         with self._zipfile.open(fname) as fd:
             return pd.read_parquet(fd)
 
