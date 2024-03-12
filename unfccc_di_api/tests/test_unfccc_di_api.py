@@ -1,4 +1,5 @@
 """Tests for the `unfccc_di_api` package."""
+
 import os
 
 import pytest
