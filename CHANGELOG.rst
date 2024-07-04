@@ -2,6 +2,11 @@
 Changelog
 =========
 
+4.0.2 (2024-07-04)
+------------------
+
+* Use data released until 2024-07-04 when using the ZenodoReader.
+
 4.0.1 (2024-01-08)
 ------------------
 

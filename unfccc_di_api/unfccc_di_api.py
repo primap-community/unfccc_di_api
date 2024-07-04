@@ -93,8 +93,8 @@ class ZenodoReader:
     def __init__(
         self,
         *,
-        url: str = "doi:10.5281/zenodo.10470862/parquet-only.zip",
-        known_hash: str = "md5:52dd6cc26f1c2eb3f8204c6a78d2e7ba",
+        url: str = "doi:10.5281/zenodo.12657469/parquet-only.zip",
+        known_hash: str = "md5:688d55f9b89218c90b46e571afa720c8",
     ):
         self._zipfile_path = pooch.retrieve(url=url, known_hash=known_hash)
         self._zipfile = zipfile.ZipFile(self._zipfile_path)
