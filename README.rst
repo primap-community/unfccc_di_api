@@ -51,7 +51,7 @@ Citation
 If you use this library and want to cite it, please cite it as:
 
 Mika Pflüger, Daniel Huppmann & Johannes Gütschow. (2024-01-08).
-pik-primap/unfccc_di_api: Version 4.0.2.
+pik-primap/unfccc_di_api: Version 4.0.3.
 Zenodo. https://doi.org/10.5281/zenodo.10471122
 
 Data package
