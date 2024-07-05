@@ -17,7 +17,6 @@ limitations under the License.
 import itertools
 import logging
 import typing
-import zipfile
 
 import pandas as pd
 import pooch
@@ -86,6 +85,8 @@ class ZenodoReader:
 
     Attributes
     ----------
+    df : pd.DataFrame
+        All data for all parties in one DataFrame.
     parties : list[str]
         All parties as a 3-letter iso code.
     """
@@ -93,25 +94,13 @@ class ZenodoReader:
     def __init__(
         self,
         *,
-        url: str = "doi:10.5281/zenodo.12657469/parquet-only.zip",
-        known_hash: str = "md5:688d55f9b89218c90b46e571afa720c8",
+        # url: str = "doi:10.5281/zenodo.12664477/all.parquet",  # DOI not yet issued
+        url: str = "https://zenodo.org/records/12664477/files/all.parquet?download=1",
+        known_hash: str = "md5:2c86ceb6717217ce413982c15a62e73f",
     ):
-        self._zipfile_path = pooch.retrieve(url=url, known_hash=known_hash)
-        self._zipfile = zipfile.ZipFile(self._zipfile_path)
-        self.parties = [
-            x.split("/")[-1][:3]
-            for x in self._zipfile.namelist()
-            if x.endswith(".parquet")
-        ]
-
-    def _get_party_data(self, *, party: str) -> pd.DataFrame:
-        fnames = [x for x in self._zipfile.namelist() if x.endswith(f"{party}.parquet")]
-        try:
-            fname = fnames[0]
-        except IndexError:
-            raise ValueError(f"Unknown party: {party}.") from None
-        with self._zipfile.open(fname) as fd:
-            return pd.read_parquet(fd)
+        self._parquet_path = pooch.retrieve(url=url, known_hash=known_hash)
+        self.df = pd.read_parquet(self._parquet_path)
+        self.parties = list(self.df["party"].unique())
 
     def query(
         self,
@@ -148,7 +137,9 @@ class ZenodoReader:
             raise NotImplementedError("Non-normalized gases not yet implemented")
         if gases is not None:
             raise NotImplementedError("Specific gas lists not yet implemented")
-        return self._get_party_data(party=party_code)
+        if party_code not in self.parties:
+            raise ValueError(f"Unknown party {party_code}.")
+        return self.df[self.df["party"] == party_code].copy()
 
 
 class UNFCCCApiReader:
