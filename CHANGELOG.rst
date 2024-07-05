@@ -2,8 +2,14 @@
 Changelog
 =========
 
+4.0.4 (2024-07-05)
+------------------
+
+* Use the latest data release which switched to a single parquet file for all data.
+
 4.0.3 (2024-07-04)
 ------------------
+
 * Re-release 4.0.2 due to technical reasons.
 
 4.0.2 (2024-07-04)
