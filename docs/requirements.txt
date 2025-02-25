@@ -1,5 +1,5 @@
 -e .
 ipykernel
 nbsphinx
-Sphinx >= 6
+Sphinx >= 6, < 8.2.0
 sphinx_rtd_theme
