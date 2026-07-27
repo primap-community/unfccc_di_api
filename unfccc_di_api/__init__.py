@@ -20,8 +20,8 @@ from .unfccc_di_api import (
 )
 
 __all__ = [
+    "NoDataError",
     "UNFCCCApiReader",
     "UNFCCCSingleCategoryApiReader",
     "ZenodoReader",
-    "NoDataError",
 ]

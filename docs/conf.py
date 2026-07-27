@@ -22,7 +22,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-import unfccc_di_api  # noqa: E402
+import unfccc_di_api
 
 # -- General configuration ---------------------------------------------
 
