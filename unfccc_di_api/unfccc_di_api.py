@@ -57,10 +57,10 @@ class NoDataError(KeyError):
     def __init__(
         self,
         party_codes: typing.Sequence[str],
-        category_ids: typing.Optional[typing.Sequence[int]] = None,
-        classifications: typing.Optional[typing.Sequence[str]] = None,
-        measure_ids: typing.Optional[typing.Sequence[int]] = None,
-        gases: typing.Optional[typing.Sequence[str]] = None,
+        category_ids: typing.Sequence[int] | None = None,
+        classifications: typing.Sequence[str] | None = None,
+        measure_ids: typing.Sequence[int] | None = None,
+        gases: typing.Sequence[str] | None = None,
     ):
         query = f"party_codes={party_codes!r}"
         for optional_param, key in (
@@ -106,7 +106,7 @@ class ZenodoReader:
         self,
         *,
         party_code: str,
-        gases: typing.Optional[typing.Sequence[str]] = None,
+        gases: typing.Sequence[str] | None = None,
         normalize_gas_names: bool = True,
     ) -> pd.DataFrame:
         """Query the dataset for party data.
@@ -188,7 +188,7 @@ class UNFCCCApiReader:
         self,
         *,
         party_code: str,
-        gases: typing.Optional[typing.Sequence[str]] = None,
+        gases: typing.Sequence[str] | None = None,
         progress: bool = False,
         normalize_gas_names: bool = True,
     ) -> pd.DataFrame:
@@ -355,11 +355,11 @@ class UNFCCCSingleCategoryApiReader:
         self.conversion_factors = pd.DataFrame(unit_info[party_category])
 
         # variable IDs are not unique
-        variables_raw: typing.List[typing.Dict[str, int]] = self._get(
+        variables_raw: list[dict[str, int]] = self._get(
             f"variables/fq/{party_category}"
         )
         self.variables = pd.DataFrame(variables_raw)
-        self._variables_dict: typing.Dict[int, typing.List[typing.Dict[str, int]]] = {}
+        self._variables_dict: dict[int, list[dict[str, int]]] = {}
         for var in variables_raw:
             vid = var["variableId"]
             if vid in self._variables_dict:
@@ -373,9 +373,9 @@ class UNFCCCSingleCategoryApiReader:
         variable_ids: typing.Sequence[int],
         party_ids: typing.Sequence[int],
         year_ids: typing.Sequence[int],
-    ) -> typing.List[dict]:
+    ) -> list[dict]:
         if len(variable_ids) > 3000:
-            logging.warning(
+            logging.warning(  # noqa: LOG015
                 "Your query parameters lead to a lot of variables selected at once. "
                 "If the query fails, try restricting your query more."
             )
@@ -393,10 +393,10 @@ class UNFCCCSingleCategoryApiReader:
         self,
         *,
         party_codes: typing.Sequence[str],
-        category_ids: typing.Optional[typing.Sequence[int]] = None,
-        classifications: typing.Optional[typing.Sequence[str]] = None,
-        measure_ids: typing.Optional[typing.Sequence[int]] = None,
-        gases: typing.Optional[typing.Sequence[str]] = None,
+        category_ids: typing.Sequence[int] | None = None,
+        classifications: typing.Sequence[str] | None = None,
+        measure_ids: typing.Sequence[int] | None = None,
+        gases: typing.Sequence[str] | None = None,
         batch_size: int = 1000,
         progress: bool = False,
         normalize_gas_names: bool = True,
@@ -525,16 +525,16 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         return df
 
     @staticmethod
-    def _id_in(vid: int, seq: typing.Optional[typing.Sequence[int]]):
+    def _id_in(vid: int, seq: typing.Sequence[int] | None):
         return seq is None or vid in seq
 
     def _parse_raw_answer(
         self,
-        raw: typing.List[dict],
-        classification_ids: typing.Optional[typing.Sequence[int]],
-        category_ids: typing.Optional[typing.Sequence[int]],
-        measure_ids: typing.Optional[typing.Sequence[int]],
-        gas_ids: typing.Optional[typing.Sequence[int]],
+        raw: list[dict],
+        classification_ids: typing.Sequence[int] | None,
+        category_ids: typing.Sequence[int] | None,
+        measure_ids: typing.Sequence[int] | None,
+        gas_ids: typing.Sequence[int] | None,
     ) -> pd.DataFrame:
         data = []
         for dp in raw:
@@ -585,11 +585,11 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
 
     def _select_variable_ids(
         self,
-        classification_ids: typing.Optional[typing.Sequence[int]],
-        category_ids: typing.Optional[typing.Sequence[int]],
-        measure_ids: typing.Optional[typing.Sequence[int]],
-        gas_ids: typing.Optional[typing.Sequence[int]],
-    ) -> typing.List[int]:
+        classification_ids: typing.Sequence[int] | None,
+        category_ids: typing.Sequence[int] | None,
+        measure_ids: typing.Sequence[int] | None,
+        gas_ids: typing.Sequence[int] | None,
+    ) -> list[int]:
         # select variables from classification
         if classification_ids is None:
             classification_mask = pd.Series(
@@ -679,7 +679,7 @@ transparency-and-reporting/greenhouse-gas-data/data-interface-help#eq-7
         resp.raise_for_status()
         return resp.json()
 
-    def _post(self, component: str, json: dict) -> typing.List[dict]:
+    def _post(self, component: str, json: dict) -> list[dict]:
         resp = requests.post(
             self.base_url + component,
             json=json,
